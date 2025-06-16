@@ -1,0 +1,34 @@
+def vacuum_cleaner(world, location):
+    actions = []
+    if world[location] == "Dirty":
+        actions.append(f"Location {location} is Dirty -> Suck")
+        world[location] = "Clean"
+    else:
+        actions.append(f"Location {location} is Clean -> Do nothing")
+
+    # Move to the other room
+    next_location = 'B' if location == 'A' else 'A'
+    actions.append(f"Move to {next_location}")
+
+    if world[next_location] == "Dirty":
+        actions.append(f"Location {next_location} is Dirty -> Suck")
+        world[next_location] = "Clean"
+    else:
+        actions.append(f"Location {next_location} is Clean -> Do nothing")
+
+    return actions, world
+world_state = {
+    'A': 'Dirty',
+    'B': 'Dirty'
+}
+
+start_location = 'A'
+actions_taken, final_state = vacuum_cleaner(world_state, start_location)
+
+print("Actions:")
+for action in actions_taken:
+    print(action)
+
+print("\nFinal World State:")
+for loc in final_state:
+    print(f"{loc}: {final_state[loc]}")
