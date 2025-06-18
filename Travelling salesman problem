@@ -1,0 +1,39 @@
+from itertools import permutations
+
+def tsp_brute_force(graph, start):
+    n = len(graph)
+    min_path = None
+    min_cost = float('inf')
+
+    cities = [i for i in range(n) if i != start]
+
+    for perm in permutations(cities):
+        cost = 0
+        current = start
+
+        for city in perm:
+            cost += graph[current][city]
+            current = city
+
+        cost += graph[current][start]  # return to starting city
+
+        if cost < min_cost:
+            min_cost = cost
+            min_path = (start,) + perm + (start,)
+
+    return min_path, min_cost
+
+# Example distance matrix (symmetric)
+# graph[i][j] = distance from city i to city j
+graph = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+start_city = 0
+path, cost = tsp_brute_force(graph, start_city)
+
+print("Minimum cost path:", path)
+print("Total cost:", cost)
